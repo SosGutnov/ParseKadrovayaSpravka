@@ -20,7 +20,18 @@ namespace ParseKadrovayaSpravka
         private void button1_Click(object sender, EventArgs e)
         {
             ConnectFile.Connect();
-            ParseTeacherInfo.ParseTacherInfo();
+            dataGridView1.Rows.Clear();
+            ParseTeacherInfo.ParseTacherInfo(dataGridView1);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

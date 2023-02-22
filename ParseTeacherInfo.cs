@@ -1,4 +1,6 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +12,28 @@ namespace ParseKadrovayaSpravka
 {
     class ParseTeacherInfo
     {
-        public static void ParseTacherInfo()
+        public static void ParseTacherInfo(DataGridView data)
         {
             var book = new XLWorkbook(ConnectFile.XlPath);
 
             var lists = book.Worksheets;
-
+            int n = 10;
+            for (int i = 0; i <= 116; i++)
+            {
+                data.Rows.Add();
+            }
             foreach (var list in lists)
             {
                 if (list.Name == "Сведения о преподавателях")
                 {
-                    var a = list.Cell(1,1).Value;
-                    MessageBox.Show(a.ToString());
+                    for (int i = 3; i < 120; i++)
+                    {
+                        for (int j = 1; j < n; j++)
+                        {
+                            data.Rows[i-3].Cells[j - 1].Value = list.Cell(i, j).Value;
+                        }
+                    }
+                    break;
                 }
             }
 
