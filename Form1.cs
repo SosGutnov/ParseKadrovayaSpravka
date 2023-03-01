@@ -20,8 +20,7 @@ namespace ParseKadrovayaSpravka
         private void button1_Click(object sender, EventArgs e)
         {
             ConnectFile.Connect();
-            dataGridView1.Rows.Clear();
-            ParseTeacherInfo.ParseTacherInfo(dataGridView1);
+            dataGridViewInfoTeacher.Rows.Clear();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -32,6 +31,16 @@ namespace ParseKadrovayaSpravka
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            ParseInfo.ParseSpecialPractices(dataGridViewInfoTeacher);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ParseInfo.ParseTacherInfo(dataGridViewInfoTeacher);
         }
     }
 }
