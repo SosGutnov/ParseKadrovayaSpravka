@@ -98,5 +98,42 @@ namespace ParseKadrovayaSpravka
             }
 
         }
+
+        public static void ParseAuditoriesInfo(DataGridView data)
+        {
+            int n = 2;
+
+            data.Columns.Clear();
+            DataGridViewTextBoxColumn[] column = new DataGridViewTextBoxColumn[n];
+            for (int i = 0; i < n; i++)
+            {
+                column[i] = new DataGridViewTextBoxColumn();
+            }
+            column[0].HeaderText = "Номер";
+            column[1].HeaderText = "Описание";
+            data.Columns.AddRange(column);
+            var book = new XLWorkbook(ConnectFile.XlPath);
+
+            var lists = book.Worksheets;
+            for (int i = 0; i <= 25; i++)
+            {
+                data.Rows.Add();
+            }
+            foreach (var list in lists)
+            {
+                if (list.Name == "Список аудиторий")
+                {
+                    for (int i = 2; i <= 27; i++)
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            data.Rows[i - 2].Cells[j].Value = list.Cell(i, j+1).Value.ToString();
+                        }
+                    }
+                    break;
+                }
+            }
+
+        }
     }
 }
