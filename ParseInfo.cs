@@ -14,10 +14,13 @@ namespace ParseKadrovayaSpravka
     {
         public static void ParseTacherInfo(DataGridView data)
         {
-            int n = 9;
+            int n = 9; // columns
+            int y = 119; // rows in excel
+            int a = 3; // marg
 
             data.Columns.Clear();
             DataGridViewTextBoxColumn[] column = new DataGridViewTextBoxColumn[n];
+
             for (int i = 0; i < n; i++)
             {
                 column[i] = new DataGridViewTextBoxColumn();
@@ -34,11 +37,10 @@ namespace ParseKadrovayaSpravka
 
             data.Columns.AddRange(column);
 
-
             var book = new XLWorkbook(ConnectFile.XlPath);
 
             var lists = book.Worksheets;
-            for (int i = 0; i <= 116; i++)
+            for (int i = 0; i <= y-a; i++)
             {
                 data.Rows.Add();
             }
@@ -46,11 +48,11 @@ namespace ParseKadrovayaSpravka
             {
                 if (list.Name == "Сведения о преподавателях")
                 {
-                    for (int i = 3; i < 120; i++)
+                    for (int i = a; i <= y; i++)
                     {
                         for (int j = 1; j <= n; j++)
                         {
-                            data.Rows[i - 3].Cells[j - 1].Value = list.Cell(i, j).Value.ToString();
+                            data.Rows[i - a].Cells[j - 1].Value = list.Cell(i, j).Value.ToString();
                         }
                     }
                     break;
@@ -62,7 +64,8 @@ namespace ParseKadrovayaSpravka
         public static void ParseSpecialPractices(DataGridView data)
         {
             int n = 5;
-
+            int y = 21;
+            int a = 4;
             data.Columns.Clear();
             DataGridViewTextBoxColumn[] column = new DataGridViewTextBoxColumn[n];
             for (int i = 0; i < n; i++)
@@ -78,7 +81,7 @@ namespace ParseKadrovayaSpravka
             var book = new XLWorkbook(ConnectFile.XlPath);
 
             var lists = book.Worksheets;
-            for (int i = 0; i <= 17; i++)
+            for (int i = 0; i <= y-a; i++)
             {
                 data.Rows.Add();
             }
@@ -86,11 +89,11 @@ namespace ParseKadrovayaSpravka
             {
                 if (list.Name == "Спецпрактики")
                 {
-                    for (int i = 4; i <= 21; i++)
+                    for (int i = a; i <= y; i++)
                     {
                         for (int j = 1; j <= n; j++)
                         {
-                            data.Rows[i - 4].Cells[j-1].Value = list.Cell(i, j+1).Value.ToString();
+                            data.Rows[i - a].Cells[j-1].Value = list.Cell(i, j+1).Value.ToString();
                         }
                     }
                     break;
