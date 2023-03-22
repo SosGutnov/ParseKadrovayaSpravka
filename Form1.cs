@@ -47,5 +47,25 @@ namespace ParseKadrovayaSpravka
         {
             ParseInfo.ParseAuditoriesInfo(dataGridViewInfo);
         }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            ParseInfo.ParseReferenceKO20_4(dataGridViewInfo);
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace ParseKadrovayaSpravka
 
             if (XlPath == string.Empty)
             {
-                MessageBox.Show("плохой файл");
+                MessageBox.Show("grustno");
                 return;
             }
 

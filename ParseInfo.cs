@@ -1,11 +1,4 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ParseKadrovayaSpravka
@@ -40,7 +33,7 @@ namespace ParseKadrovayaSpravka
             var book = new XLWorkbook(ConnectFile.XlPath);
 
             var lists = book.Worksheets;
-            for (int i = 0; i <= y-a; i++)
+            for (int i = 0; i <= y - a; i++)
             {
                 data.Rows.Add();
             }
@@ -81,7 +74,7 @@ namespace ParseKadrovayaSpravka
             var book = new XLWorkbook(ConnectFile.XlPath);
 
             var lists = book.Worksheets;
-            for (int i = 0; i <= y-a; i++)
+            for (int i = 0; i <= y - a; i++)
             {
                 data.Rows.Add();
             }
@@ -93,7 +86,7 @@ namespace ParseKadrovayaSpravka
                     {
                         for (int j = 1; j <= n; j++)
                         {
-                            data.Rows[i - a].Cells[j-1].Value = list.Cell(i, j+1).Value.ToString();
+                            data.Rows[i - a].Cells[j - 1].Value = list.Cell(i, j + 1).Value.ToString();
                         }
                     }
                     break;
@@ -105,7 +98,8 @@ namespace ParseKadrovayaSpravka
         public static void ParseAuditoriesInfo(DataGridView data)
         {
             int n = 2;
-
+            int y = 27;
+            int a = 2;
             data.Columns.Clear();
             DataGridViewTextBoxColumn[] column = new DataGridViewTextBoxColumn[n];
             for (int i = 0; i < n; i++)
@@ -118,7 +112,7 @@ namespace ParseKadrovayaSpravka
             var book = new XLWorkbook(ConnectFile.XlPath);
 
             var lists = book.Worksheets;
-            for (int i = 0; i <= 25; i++)
+            for (int i = 0; i <= y - a; i++)
             {
                 data.Rows.Add();
             }
@@ -126,11 +120,72 @@ namespace ParseKadrovayaSpravka
             {
                 if (list.Name == "Список аудиторий")
                 {
-                    for (int i = 2; i <= 27; i++)
+                    for (int i = a; i <= y; i++)
                     {
                         for (int j = 0; j < n; j++)
                         {
-                            data.Rows[i - 2].Cells[j].Value = list.Cell(i, j+1).Value.ToString();
+                            data.Rows[i - a].Cells[j].Value = list.Cell(i, j + 1).Value.ToString();
+                        }
+                    }
+                    break;
+                }
+            }
+
+        }
+
+        public static void ParseReferenceKO20_4(DataGridView data)
+        {
+            int n = 10;
+            int y = 96;
+            int a = 4;
+            data.Columns.Clear();
+            DataGridViewTextBoxColumn[] column = new DataGridViewTextBoxColumn[n];
+            for (int i = 0; i < n; i++)
+            {
+                column[i] = new DataGridViewTextBoxColumn();
+            }
+            column[0].HeaderText = "Наименование учебных предметов";
+            column[1].HeaderText = "Ф.И.О. педагогического (научно- педагогического) работника, участвующего в реализации образовательной программы";
+            column[2].HeaderText = "Условия привлечения (по основному месту работы, на условиях внутреннего/ внешнего совместительства; на условиях договора гражданско- правового характера (далее - договор ГПХ)";
+            column[3].HeaderText = "Должность, ученая степень, ученое звание";
+            column[4].HeaderText = "Уровень образования, наименование специальности, направления подготовки, наименование присвоенной квалификации";
+            column[5].HeaderText = "Сведения о дополнительном профессиональном образовании";
+            column[6].HeaderText = "Объем учебной нагрузки, количество часов";
+            column[7].HeaderText = "Объем учебной нагрузки, доля ставки";
+            column[8].HeaderText = "Трудовой стаж работы, стаж работы в организациях, осуществляющих образовательную деятельность, на должностях педагогических (научно- педагогических) работников";
+            column[9].HeaderText = "Трудовой стаж работы, стаж работы в иных организациях, осуществляющих деятельность в профессиональной сфере, соответствующей профессиональной деятельности, к которой готовится выпускник";
+
+
+            data.Columns.AddRange(column);
+            var book = new XLWorkbook(ConnectFile.XlPath);
+
+            var lists = book.Worksheets;
+            for (int i = 0; i <= y - a; i++)
+            {
+                data.Rows.Add();
+            }
+            foreach (var list in lists)
+            {
+                if (list.Name == "Справка КО 20-4")
+                {
+                    MessageBox.Show(list.Cell(3, 9).Value.ToString());
+                    var last = "";
+                    for (int i = a; i <= y; i++)
+                    {
+                        for (int j = 1; j < n; j++)
+                        {
+                            if (list.Cell(i, j + 1).IsEmpty() && j == 0)
+                            {
+                                data.Rows[i - a].Cells[j - 1].Value = last;
+                            }
+                            else
+                            {
+                                data.Rows[i - a].Cells[j - 1].Value = list.Cell(i, j + 1).Value.ToString();
+                                if (j == 1)
+                                {
+                                    last = list.Cell(i, j + 1).Value.ToString();
+                                }
+                            }
                         }
                     }
                     break;
