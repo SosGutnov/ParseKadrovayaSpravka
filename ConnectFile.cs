@@ -11,7 +11,7 @@ namespace ParseKadrovayaSpravka
     {
         public static string XlPath { get; set; }
 
-        public static void Connect()
+        public static void Connect(Button button1)
         {
             var curDir = Environment.CurrentDirectory;
             XlPath = string.Empty;
@@ -30,11 +30,7 @@ namespace ParseKadrovayaSpravka
                 }
             }
 
-            if (XlPath == string.Empty)
-            {
-                MessageBox.Show("grustno");
-                return;
-            }
+            button1.Text = XlPath;
 
         }
     }
