@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -56,7 +57,7 @@ namespace ParseKadrovayaSpravka
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            InsertDataExample.InsertData();
         }
     }
 }
