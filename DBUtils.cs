@@ -13,7 +13,7 @@ namespace ParseKadrovayaSpravka
         {
             string host = "127.0.0.1";
             int port = 3306;
-            string database = "bd_test";
+            string database = "db_ns";
             string username = "root";
             string password = "";
 
