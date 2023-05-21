@@ -7,6 +7,7 @@ namespace ParseKadrovayaSpravka
     class ParseInfo
     {
         public static List<string> fio = new List<string>();
+        public static List<string> degrees = new List<string>();
         public static void ParseTacherInfo(DataGridView data)
         {
             int n = 9; // columns
@@ -49,6 +50,7 @@ namespace ParseKadrovayaSpravka
                             data.Rows[i - a].Cells[j - 1].Value = list.Cell(i, j).Value.ToString();
                         }
                         fio.Add(data.Rows[i - a].Cells[0].Value.ToString());
+                        degrees.Add(data.Rows[i - a].Cells[2].Value.ToString());
                     }
                     break;
                 }
