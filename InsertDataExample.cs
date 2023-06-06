@@ -1,12 +1,14 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace ParseKadrovayaSpravka
 {
     internal class InsertDataExample
     {
         private static MySqlConnection connection = DBUtils.GetDBConnection();
+
         public static void InsertDataEmpl(List<string> fio)
         {
             // Получить соединение к базе данных.
@@ -38,13 +40,6 @@ namespace ParseKadrovayaSpravka
                 Console.WriteLine(e.StackTrace);
                 Console.WriteLine("Выберите файл");
             }
-            finally
-            {
-                connection.Close();
-                connection.Dispose();
-                connection = null;
-            }
-
             Console.Read();
 
         }
@@ -57,6 +52,8 @@ namespace ParseKadrovayaSpravka
             {
                 for (int i = 0; i < fio.Count; i++)
                 {
+                    MySqlCommand cmd = connection.CreateCommand();
+
                     string sql = "";
 
                     string empl_d = degrees[i].Split(',')[1].Trim();
@@ -77,10 +74,38 @@ namespace ParseKadrovayaSpravka
                     }
                     else
                     {
-                        empl_d = "";//??
+                        empl_d_t = empl_d;
+                        sql = "Insert into degrees (title, short_title) "
+                                                     + " values (@title, @short_title) ";
+                        MySqlCommand cmd1 = connection.CreateCommand();
+                        cmd1.CommandText = sql;
+
+                        cmd1.Parameters.Add("@title", MySqlDbType.VarChar).Value = empl_d_t;
+                        cmd1.Parameters.Add("@short_title", MySqlDbType.VarChar).Value = empl_d_st;
                     }
 
+                    sql = "SELECT `id` FROM `employees` WHERE `surname`= '" + fio[i].Split()[0] + "' AND `name`= '"
+                                    + fio[i].Split()[1] + "' AND `patronimyc`= '" + fio[i].Split()[2] + "'";
+                    cmd.CommandText = sql;
+                    var id_employees = Convert.ToInt32(cmd.ExecuteScalar());
+                    Console.WriteLine(id_employees);
 
+
+                    sql = "SELECT `id` FROM `degrees` WHERE `title`= '" + empl_d_t + "' AND `short_title`= '"+ empl_d_st + "'";
+                    MySqlCommand cmd2 = connection.CreateCommand();
+                    cmd2.CommandText = sql;
+                    var id_degrees = Convert.ToInt32(cmd2.ExecuteScalar());
+                    Console.WriteLine(id_degrees);
+
+
+                    sql = "Insert into empl_degrees (employee_id, spec_id, degree_id, date) "
+                                                     + " values (@employee_id, @spec_id, @degree_id, @date) ";
+                    MySqlCommand cmd3 = connection.CreateCommand();
+                    cmd3.CommandText = sql;
+                    cmd3.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = id_employees;
+                    cmd3.Parameters.Add("@spec_id", MySqlDbType.Int32).Value = "";
+                    cmd3.Parameters.Add("@degree_id", MySqlDbType.Int32).Value = id_degrees;
+                    cmd3.Parameters.Add("@date", MySqlDbType.Date).Value = "";
                 }
 
             }

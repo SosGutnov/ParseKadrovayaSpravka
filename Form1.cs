@@ -57,7 +57,7 @@ namespace ParseKadrovayaSpravka
 
         private void button2_Click(object sender, EventArgs e)
         {
-            InsertDataExample.InsertDataEmpl(ParseInfo.fio);
+            //InsertDataExample.InsertDataEmpl(ParseInfo.fio);
             InsertDataExample.InsertDataEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
         }
     }
