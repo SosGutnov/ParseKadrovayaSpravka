@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using ParseKadrovayaSpravka.Справочные_данные;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -60,63 +61,56 @@ namespace ParseKadrovayaSpravka
                     string empl_d_t = "";
                     string empl_d_st = "";
 
-                    if (empl_d == "ученая степень отсутствует") empl_d_t = "-";
-                    else if (empl_d == "канд. физ.-мат. наук")
+                    int id_degrees = 0;
+                    int id_employees = 0;
+
+                    if (ReferenceData.EmployeeDegrees.ContainsKey(empl_d))
                     {
-                        empl_d_t = "кандидат физико-математических наук";
-                        empl_d_st = "к.ф.-м.н.";
-                    }
-                    else if (empl_d == "докт. физ.-мат. наук" || empl_d == "док. физ.-мат. наук" || empl_d == "доктор физико-математических наук" || empl_d == "д. ф.-м. н.")
-                    {
-                        empl_d_t = "доктор физико-математических наук";
-                        empl_d_st = "д.ф.-м.н.";
+                        empl_d_t = ReferenceData.EmployeeDegrees[empl_d].Item1;
+                        empl_d_st = ReferenceData.EmployeeDegrees[empl_d].Item2;
+
+                        sql = "SELECT `id` FROM `degrees` WHERE `title`= '" + empl_d_t + "'";
+                        MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+                        MySqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                id_degrees = Convert.ToInt32(reader.GetValue(0));
+                            }
+                            reader.Close();
+                        }
+                        else
+                        {
+                            reader.Close();
+                            sql = "Insert into degrees (title, short_title) values (@title, @short_title) ";
+                            MySqlCommand cmd1 = new MySqlCommand(sql, connection);
+                            cmd1.Parameters.Add("@title", MySqlDbType.VarChar).Value = empl_d_t;
+                            cmd1.Parameters.Add("@short_title", MySqlDbType.VarChar).Value = empl_d_st;
+
+                            int rowCount = cmd1.ExecuteNonQuery();
+                            id_degrees = Convert.ToInt32(cmd1.LastInsertedId);
+                        }
                     }
                     else
                     {
-                        sql = "SELECT `id` FROM `degrees` WHERE `title`= '" + empl_d_t + "'";
-                        MySqlCommand cmd4 = new MySqlCommand(sql, connection);
-
-                        MySqlDataReader reader = cmd4.ExecuteReader();
-
-                        if (!reader.Read())
-                        {
-                            sql = "Insert into degrees (title) "
-                                                     + " values (@title) ";
-                            MySqlCommand cmd2 = new MySqlCommand(sql, connection);
-                            cmd2.Parameters.Add("@title", MySqlDbType.VarChar).Value = empl_d_t;
-                        }
-
+                        //empl_d_t = empl_d;
                     }
-
-                    sql = "SELECT `id` FROM `employees` WHERE `surname`= '" + fio[i].Split()[0] + "' AND `name`= '"
+                    
+                    /*sql = "SELECT `id` FROM `employees` WHERE `surname`= '" + fio[i].Split()[0] + "' AND `name`= '"
                                     + fio[i].Split()[1] + "' AND `patronimyc`= '" + fio[i].Split()[2] + "'";
-                    MySqlCommand cmd = new MySqlCommand(sql, connection);
-                    var id_employees = Convert.ToInt32(cmd.ExecuteScalar());
+                    MySqlCommand cmd2 = new MySqlCommand(sql, connection);
+                    id_employees = Convert.ToInt32(cmd2.ExecuteScalar());
                     Console.WriteLine(id_employees);
 
-                    var id_degrees = 0;
-                    if (empl_d_t == "-")
-                    {
-                        id_degrees = 0;
-                    }
-                    else
-                    {
-                        sql = "SELECT `id` FROM `degrees` WHERE `title`= '" + empl_d_t + "'";
-                        MySqlCommand cmd2 = connection.CreateCommand();
-                        cmd2.CommandText = sql;
-                        id_degrees = Convert.ToInt32(cmd2.ExecuteScalar());
-                        Console.WriteLine(id_degrees);
-                    }
-
-
-                    sql = "Insert into empl_degrees (employee_id, spec_id, degree_id, date) "
-                                                     + " values (@employee_id, @spec_id, @degree_id, @date) ";
+                    sql = "Insert into empl_degrees (employee_id, degree_id) "
+                                                     + " values (@employee_id, @degree_id) ";
                     MySqlCommand cmd3 = new MySqlCommand(sql, connection);
                     cmd3.CommandText = sql;
                     cmd3.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = id_employees;
-                    cmd3.Parameters.Add("@spec_id", MySqlDbType.Int32).Value = 0;
                     cmd3.Parameters.Add("@degree_id", MySqlDbType.Int32).Value = id_degrees;
-                    cmd3.Parameters.Add("@date", MySqlDbType.Date).Value = "0000-00-00";
+                    */
                 }
 
             }
