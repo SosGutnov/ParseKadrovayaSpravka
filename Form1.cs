@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,9 @@ namespace ParseKadrovayaSpravka
 {
     public partial class Form1 : Form
     {
+
+        public static MySqlConnection connection = DBUtils.GetDBConnection();
+
         public Form1()
         {
             InitializeComponent();
@@ -57,8 +61,20 @@ namespace ParseKadrovayaSpravka
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //InsertDataExample.InsertDataEmpl(ParseInfo.fio);
-            InsertDataExample.InsertDataEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
+            connection.Open();
+            try
+            {
+                InsertDataExample.InsertDataEmpl(ParseInfo.fio);
+                InsertDataExample.InsertDataEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
+                InsertEducation.InsertEdu1(ParseInfo.fio, ParseInfo.for_education);
+                InsertTitles.InsertTitl(ParseInfo.fio, ParseInfo.degrees);//degrees=titles
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+                connection = null;
+            }
         }
     }
 }
