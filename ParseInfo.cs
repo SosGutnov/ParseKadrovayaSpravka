@@ -9,6 +9,8 @@ namespace ParseKadrovayaSpravka
         public static List<string> fio = new List<string>();
         public static List<string> degrees = new List<string>();
         public static List<string> for_education = new List<string>();
+        public static List<string[]> external_practice = new List<string[]>();
+
         public static void ParseTacherInfo(DataGridView data)
         {
             int n = 9; // columns
@@ -94,6 +96,12 @@ namespace ParseKadrovayaSpravka
                         {
                             data.Rows[i - a].Cells[j - 1].Value = list.Cell(i, j + 1).Value.ToString();
                         }
+                        external_practice.Add(
+                            new string[5] { data.Rows[i - a].Cells[0].Value.ToString(),
+                            data.Rows[i - a].Cells[1].Value.ToString(),
+                            data.Rows[i - a].Cells[2].Value.ToString(),
+                            data.Rows[i - a].Cells[3].Value.ToString(),
+                            data.Rows[i - a].Cells[4].Value.ToString()});
                     }
                     break;
                 }

@@ -27,6 +27,7 @@ namespace ParseKadrovayaSpravka
             ConnectFile.Connect(button1);
             dataGridViewInfo.Rows.Clear();
             toolStripMenuItem1_Click(sender,  e);
+            toolStripMenuItem2_Click(sender, e);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -64,10 +65,11 @@ namespace ParseKadrovayaSpravka
             connection.Open();
             try
             {
-                InsertDataExample.InsertDataEmpl(ParseInfo.fio);
-                InsertDataExample.InsertDataEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
+                InsertDataExample.InsertEmpl(ParseInfo.fio);
+                InsertDataExample.InsertEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
                 InsertEducation.InsertEdu1(ParseInfo.fio, ParseInfo.for_education);
                 InsertTitles.InsertTitl(ParseInfo.fio, ParseInfo.degrees);//degrees=titles
+                InsertExternalPractices.InsertExtP(ParseInfo.external_practice);
             }
             finally
             {

@@ -11,7 +11,7 @@ namespace ParseKadrovayaSpravka
 {
     internal class InsertDataExample
     {
-        public static void InsertDataEmpl(List<string> fio)
+        public static void InsertEmpl(List<string> fio)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace ParseKadrovayaSpravka
                     }
                     reader.Close();
                 }
-
+                Console.WriteLine("employees - good");
             }
             catch (Exception e)
             {
@@ -53,7 +53,7 @@ namespace ParseKadrovayaSpravka
 
         }
 
-        public static void InsertDataEmpl_Degrees(List<string> fio, List<string> degrees)
+        public static void InsertEmpl_Degrees(List<string> fio, List<string> degrees)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace ParseKadrovayaSpravka
                     }
 
                     id_employees = MySqlFunctions.GetEmployeesID(Form1.connection, fio[i].Split()[0], fio[i].Split()[1], fio[i].Split()[2]);
-                    Console.WriteLine(id_employees);
+                    //Console.WriteLine(id_employees);
 
                     sql = "SELECT `employee_id` FROM `empl_degrees`";
                     MySqlCommand cmd3 = new MySqlCommand(sql, Form1.connection);
@@ -138,7 +138,7 @@ namespace ParseKadrovayaSpravka
                         cmd4.ExecuteNonQuery();
                     }
                 }
-
+                Console.WriteLine("empl_degrees - good");
             }
             catch (Exception e)
             {

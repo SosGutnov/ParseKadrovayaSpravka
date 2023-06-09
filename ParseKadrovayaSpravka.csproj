@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="InsertDataExample.cs" />
     <Compile Include="InsertEducation.cs" />
+    <Compile Include="InsertExternalPractices.cs" />
     <Compile Include="InsertTitles.cs" />
     <Compile Include="ParseInfo.cs" />
     <Compile Include="Program.cs" />

@@ -52,6 +52,7 @@ namespace ParseKadrovayaSpravka
                     }
 
                 }
+                Console.WriteLine("empl_education - good");
             }
             catch (Exception e)
             {

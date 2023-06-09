@@ -69,6 +69,7 @@ namespace ParseKadrovayaSpravka
                         }
                     }
                 }
+                Console.WriteLine("empl_titles - good");
             }
             catch (Exception e)
             {
