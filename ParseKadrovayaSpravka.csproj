@@ -129,13 +129,13 @@
     <Compile Include="ConnectFile.cs" />
     <Compile Include="DBMySQLUtils.cs" />
     <Compile Include="DBUtils.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InsertDataExample.cs" />
+    <Compile Include="InsertDegrees.cs" />
     <Compile Include="InsertEducation.cs" />
     <Compile Include="InsertExternalPractices.cs" />
     <Compile Include="InsertTitles.cs" />
@@ -144,8 +144,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MySqlFunctions.cs" />
     <Compile Include="Справочные данные\ReferenceData.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

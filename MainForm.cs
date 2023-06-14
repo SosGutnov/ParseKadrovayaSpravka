@@ -6,18 +6,19 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ParseKadrovayaSpravka
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
 
         public static MySqlConnection connection = DBUtils.GetDBConnection();
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -52,12 +53,12 @@ namespace ParseKadrovayaSpravka
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            ParseInfo.ParseAuditoriesInfo(dataGridViewInfo);
+            //ParseInfo.ParseAuditoriesInfo(dataGridViewInfo);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            ParseInfo.ParseReferenceKO20_4(dataGridViewInfo);
+            //ParseInfo.ParseReferenceKO20_4(dataGridViewInfo);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -65,8 +66,8 @@ namespace ParseKadrovayaSpravka
             connection.Open();
             try
             {
-                InsertDataExample.InsertEmpl(ParseInfo.fio);
-                InsertDataExample.InsertEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
+                InsertDegrees.InsertEmpl(ParseInfo.fio);
+                InsertDegrees.InsertEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
                 InsertEducation.InsertEdu1(ParseInfo.fio, ParseInfo.for_education);
                 InsertTitles.InsertTitl(ParseInfo.fio, ParseInfo.degrees);//degrees=titles
                 InsertExternalPractices.InsertExtP(ParseInfo.external_practice);

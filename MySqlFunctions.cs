@@ -74,7 +74,7 @@ namespace ParseKadrovayaSpravka
                             " AND `organization`= @organization" +
                             " AND `position`= @position" +
                             " AND `education`= @education";
-            MySqlCommand cmd1 = new MySqlCommand(sql, Form1.connection);
+            MySqlCommand cmd1 = new MySqlCommand(sql, MainForm.connection);
             cmd1.Parameters.Add("@empl_id", MySqlDbType.Int32).Value = id_employee;
             cmd1.Parameters.Add("@date_from", MySqlDbType.DateTime).Value = date_from;
             cmd1.Parameters.Add("@date_to", MySqlDbType.DateTime).Value = date_to;
@@ -95,7 +95,7 @@ namespace ParseKadrovayaSpravka
                 reader1.Close();
                 sql = "INSERT INTO `external_practices` (`empl_id`, `date_from`, `date_to`, `organization`, `position`, `education`)"
                                          + " VALUES (@empl_id, @date_from, @date_to, @organization, @position, @education) ";
-                MySqlCommand cmd2 = new MySqlCommand(sql, Form1.connection);
+                MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
 
                 cmd2.Parameters.Add("@empl_id", MySqlDbType.Int32).Value = id_employee;
                 cmd2.Parameters.Add("@date_from", MySqlDbType.DateTime).Value = date_from;

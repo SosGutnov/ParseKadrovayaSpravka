@@ -16,10 +16,8 @@ namespace ParseKadrovayaSpravka
             int n = 9; // columns
             int y = 119; // rows in excel
             int a = 3; // marg
-
             data.Columns.Clear();
             DataGridViewTextBoxColumn[] column = new DataGridViewTextBoxColumn[n];
-
             for (int i = 0; i < n; i++)
             {
                 column[i] = new DataGridViewTextBoxColumn();
@@ -36,8 +34,8 @@ namespace ParseKadrovayaSpravka
             data.Columns.AddRange(column);
 
             var book = new XLWorkbook(ConnectFile.XlPath);
-
             var lists = book.Worksheets;
+
             for (int i = 0; i <= y - a; i++)
             {
                 data.Rows.Add();
@@ -59,7 +57,6 @@ namespace ParseKadrovayaSpravka
                     break;
                 }
             }
-
         }
 
         public static void ParseSpecialPractices(DataGridView data)

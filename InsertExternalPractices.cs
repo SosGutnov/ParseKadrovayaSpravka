@@ -16,7 +16,7 @@ namespace ParseKadrovayaSpravka
                     string position = data[i][2].Trim();
                     string date = data[i][3].Trim();
 
-                    int id_employee = MySqlFunctions.GetEmployeesID(Form1.connection, fio.Split()[0], fio.Split()[1], fio.Split()[2]);
+                    int id_employee = MySqlFunctions.GetEmployeesID(MainForm.connection, fio.Split()[0], fio.Split()[1], fio.Split()[2]);
                     int education = Convert.ToInt32(data[i][4].Split()[0]);
 
 
@@ -46,7 +46,7 @@ namespace ParseKadrovayaSpravka
 
 
                 }
-                Console.WriteLine("external_practice - good");
+                Console.WriteLine("external_practice - OK");
             }
             catch (Exception e)
             {

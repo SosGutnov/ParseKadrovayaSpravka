@@ -52,7 +52,7 @@ namespace ParseKadrovayaSpravka
                     }
 
                 }
-                Console.WriteLine("empl_education - good");
+                Console.WriteLine("empl_education - OK");
             }
             catch (Exception e)
             {
@@ -73,10 +73,10 @@ namespace ParseKadrovayaSpravka
                 DateTime date = new DateTime();
                 string serial = "";
 
-                id_employee = MySqlFunctions.GetEmployeesID(Form1.connection, fio.Split()[0], fio.Split()[1], fio.Split()[2]);
+                id_employee = MySqlFunctions.GetEmployeesID(MainForm.connection, fio.Split()[0], fio.Split()[1], fio.Split()[2]);
 
                 string sql = "SELECT `id` FROM `edu_levels` WHERE `title`= '" + edu_lvl + "'";
-                MySqlCommand cmd = new MySqlCommand(sql, Form1.connection);
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -103,7 +103,7 @@ namespace ParseKadrovayaSpravka
                             " AND `edu_level_id`= '" + id_edu_lvl + "'" +
                             " AND `speciality`= '" + spec + "'" +
                             " AND `qualification`= '" + qf + "'";
-                        MySqlCommand cmd1 = new MySqlCommand(sql, Form1.connection);
+                        MySqlCommand cmd1 = new MySqlCommand(sql, MainForm.connection);
 
                         MySqlDataReader reader1 = cmd1.ExecuteReader();
                         if (reader1.HasRows)
@@ -118,7 +118,7 @@ namespace ParseKadrovayaSpravka
                             reader1.Close();
                             sql = "INSERT INTO `empl_education` (`employee_id`, `edu_level_id`, `speciality`, `qualification`, `date`, `serial`)"
                                                      + " VALUES (@employee_id, @edu_level_id, @speciality, @qualification, @date, @serial) ";
-                            MySqlCommand cmd2 = new MySqlCommand(sql, Form1.connection);
+                            MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
 
                             cmd2.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = id_employee;
                             cmd2.Parameters.Add("@edu_level_id", MySqlDbType.Int32).Value = id_edu_lvl;
