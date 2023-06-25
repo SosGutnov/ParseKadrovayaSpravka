@@ -21,13 +21,13 @@ namespace ParseKadrovayaSpravka
                     int id_employee = 0;
                     DateTime date = new DateTime();
 
-                    id_employee = MySqlFunctions.GetEmployeesID(Form1.connection, fio[i].Split()[0], fio[i].Split()[1], fio[i].Split()[2]);
+                    id_employee = MySqlFunctions.GetEmployeesID(MainForm.connection, fio[i].Split()[0], fio[i].Split()[1], fio[i].Split()[2]);
 
                     title = data[i].Split(',')[2].Trim();
                     if (title != "ученое звание отсутствует")
                     {
                         string sql = "SELECT `id` FROM `titles` WHERE `title` ='" + title + "'";
-                        MySqlCommand cmd = new MySqlCommand(sql, Form1.connection);
+                        MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
                         MySqlDataReader reader = cmd.ExecuteReader();
 
                         if (reader.HasRows)
@@ -43,7 +43,7 @@ namespace ParseKadrovayaSpravka
                             " WHERE `employee_id`= '" + id_employee + "'" +
                             " AND `title_id`= '" + id_title + "'" +
                             " AND `date`= '" + date + "'";
-                        MySqlCommand cmd1 = new MySqlCommand(sql, Form1.connection);
+                        MySqlCommand cmd1 = new MySqlCommand(sql, MainForm.connection);
 
                         MySqlDataReader reader1 = cmd1.ExecuteReader();
                         if (reader1.HasRows)
@@ -59,7 +59,7 @@ namespace ParseKadrovayaSpravka
                             reader1.Close();
                             sql = "INSERT INTO `empl_titles` (`employee_id`, `title_id`, `date`)"
                                                      + " VALUES (@employee_id, @title_id, @date) ";
-                            MySqlCommand cmd2 = new MySqlCommand(sql, Form1.connection);
+                            MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
 
                             cmd2.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = id_employee;
                             cmd2.Parameters.Add("@title_id", MySqlDbType.Int32).Value = id_title;
@@ -69,7 +69,7 @@ namespace ParseKadrovayaSpravka
                         }
                     }
                 }
-                Console.WriteLine("empl_titles - good");
+                Console.WriteLine("empl_titles - OK");
             }
             catch (Exception e)
             {

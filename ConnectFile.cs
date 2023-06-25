@@ -30,7 +30,7 @@ namespace ParseKadrovayaSpravka
                 }
             }
 
-            button1.Text = XlPath;
+            button1.Text = "Файл выбран";
 
         }
     }
