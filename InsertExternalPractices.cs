@@ -17,12 +17,14 @@ namespace ParseKadrovayaSpravka
                     string date = data[i][3].Trim();
 
                     int id_employee = MySqlFunctions.GetEmployeesID(MainForm.connection, fio.Split()[0], fio.Split()[1], fio.Split()[2]);
+                    DateTime date_from;
+                    DateTime date_to;
                     int education = Convert.ToInt32(data[i][4].Split()[0]);
 
                     if (!date.Contains("по"))
                     {
                         string[] temp = date.Split('-')[0].Split('.');
-                        if (temp.Length != 3) date_from = new  DateTime(1, 1, Convert.ToInt32(temp[0]));
+                        if (temp.Length != 3) date_from = new  DateTime(Convert.ToInt32(temp[0]), 1, 1);
                         else date_from = new DateTime(Convert.ToInt32(temp[2]), Convert.ToInt32(temp[1]), Convert.ToInt32(temp[0]));
                         if (date.Split('-')[1] == "настоящее время")
                         {
