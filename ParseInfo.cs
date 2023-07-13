@@ -1,5 +1,8 @@
 ﻿using ClosedXML.Excel;
+using Newtonsoft.Json;
+using ParseKadrovayaSpravka.models;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ParseKadrovayaSpravka
@@ -33,7 +36,7 @@ namespace ParseKadrovayaSpravka
             column[8].HeaderText = "Избран по конкурсу ";
             data.Columns.AddRange(column);
 
-            var book = new XLWorkbook(ConnectFile.XlPath);
+            var book = new XLWorkbook(ConnectXMLfile.XlPath[0]);
             var lists = book.Worksheets;
 
             for (int i = 0; i <= y - a; i++)
@@ -76,7 +79,7 @@ namespace ParseKadrovayaSpravka
             column[3].HeaderText = "Период работы в организации";
             column[4].HeaderText = "Общий трудовой стаж";
             data.Columns.AddRange(column);
-            var book = new XLWorkbook(ConnectFile.XlPath);
+            var book = new XLWorkbook(ConnectXMLfile.XlPath[0]);
 
             var lists = book.Worksheets;
             for (int i = 0; i <= y - a; i++)
@@ -120,7 +123,7 @@ namespace ParseKadrovayaSpravka
             column[0].HeaderText = "Номер";
             column[1].HeaderText = "Описание";
             data.Columns.AddRange(column);
-            var book = new XLWorkbook(ConnectFile.XlPath);
+            var book = new XLWorkbook(ConnectXMLfile.XlPath[0]);
 
             var lists = book.Worksheets;
             for (int i = 0; i <= y - a; i++)
@@ -168,7 +171,7 @@ namespace ParseKadrovayaSpravka
 
 
             data.Columns.AddRange(column);
-            var book = new XLWorkbook(ConnectFile.XlPath);
+            var book = new XLWorkbook(ConnectXMLfile.XlPath[0]);
 
             var lists = book.Worksheets;
             for (int i = 0; i <= y - a; i++)
@@ -203,6 +206,26 @@ namespace ParseKadrovayaSpravka
                 }
             }
 
+        }
+
+        public static void ParseLoads(DataGridView data)
+        {
+            Department dep = new Department("Кафедра прикладной математики и информатики", "Факультет математики и компьютерных наук");
+            Load load = new Load(2022, dep);
+            Edu_semester edu_sem = new Edu_semester();
+
+            Employee empl = new Employee("Циунчик","С","А");
+            Empl_load empl_load = new Empl_load(load, empl, 1, 0, "ИВТ(б)-21-1-ОФО", "Современные языки программирования", "Лабораторная", 36, 0);
+
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter sw = new StreamWriter("loads.json"))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, empl_load);
+            }
+
+            System.Console.WriteLine("Готово");
         }
     }
 }

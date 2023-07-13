@@ -63,6 +63,9 @@
     <Reference Include="MySql.Data, Version=8.0.33.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>packages\MySql.Data.8.0.33\lib\net462\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
       <HintPath>packages\SixLabors.Fonts.1.0.0-beta19\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
@@ -126,7 +129,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectFile.cs" />
+    <Compile Include="ConnectXMLfile.cs" />
     <Compile Include="DBMySQLUtils.cs" />
     <Compile Include="DBUtils.cs" />
     <Compile Include="MainForm.cs">
@@ -139,6 +142,11 @@
     <Compile Include="InsertEducation.cs" />
     <Compile Include="InsertExternalPractices.cs" />
     <Compile Include="InsertTitles.cs" />
+    <Compile Include="models\Department.cs" />
+    <Compile Include="models\Edu_semester.cs" />
+    <Compile Include="models\Employee.cs" />
+    <Compile Include="models\Empl_load.cs" />
+    <Compile Include="models\Load.cs" />
     <Compile Include="ParseInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

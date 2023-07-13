@@ -7,26 +7,32 @@ using System.Windows.Forms;
 
 namespace ParseKadrovayaSpravka
 {
-    class ConnectFile
+    class ConnectXMLfile
     {
-        public static string XlPath { get; set; }
+        public static List<string> XlPath { get; set; }
 
         public static void Connect(Button button1)
         {
             var curDir = Environment.CurrentDirectory;
-            XlPath = string.Empty;
-
+            XlPath = new List<string>();
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                
                 openFileDialog.InitialDirectory = curDir + @"\..\..";
                 //openFileDialog.Filter = "(*.xlsm)|*.xlsm|(*.xlsx)|*.xlsx";
                 openFileDialog.Filter = "(*.xls)|*.xls*";
                 openFileDialog.FilterIndex = 1;
+                openFileDialog.Multiselect = true;
                 openFileDialog.RestoreDirectory = true;
-                openFileDialog.Title = "Выберите файл";
+                openFileDialog.Title = "Выберите файлы";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    XlPath = openFileDialog.FileName;
+                    foreach (var item in openFileDialog.FileNames)
+                    {
+                        XlPath.Add(item);
+                    }
+                    Console.WriteLine(XlPath[0]);
+                    
                 }
             }
 
