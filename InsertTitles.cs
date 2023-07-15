@@ -50,7 +50,7 @@ namespace ParseKadrovayaSpravka
                         {
                             while (reader1.Read())
                             {
-                                int id_ = Convert.ToInt32(reader.GetValue(0));
+                                int id_ = Convert.ToInt32(reader1.GetValue(0));
                             }
                             reader1.Close();
                         }

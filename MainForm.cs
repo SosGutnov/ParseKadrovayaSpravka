@@ -33,7 +33,7 @@ namespace ParseKadrovayaSpravka
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ParseInfo.ParseLoads(dataGridViewInfo);
+
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -71,6 +71,7 @@ namespace ParseKadrovayaSpravka
                 InsertEducation.InsertEdu1(ParseInfo.fio, ParseInfo.for_education);
                 InsertTitles.InsertTitl(ParseInfo.fio, ParseInfo.degrees);//degrees=titles
                 InsertExternalPractices.InsertExtP(ParseInfo.external_practice);
+                ParseInfo.ParseLoads();
             }
             finally
             {

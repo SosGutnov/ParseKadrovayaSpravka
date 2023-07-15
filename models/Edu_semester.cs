@@ -8,6 +8,7 @@ namespace ParseKadrovayaSpravka.models
 {
     class Edu_semester
     {
+        //public Edu_plan Edu_plan { get; set; }
         public int Semester { get; set; }
         public int Lecture { get; set; }
         public int Practice { get; set; }
