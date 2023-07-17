@@ -32,7 +32,7 @@ namespace ParseKadrovayaSpravka
                                          + " VALUES (@current_year, @department_id) ";
                 MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
 
-                cmd2.Parameters.Add("@current_year", MySqlDbType.Int32).Value = load.Current_year;
+                cmd2.Parameters.Add("@current_year", MySqlDbType.Year).Value = load.Current_year;
                 cmd2.Parameters.Add("@department_id", MySqlDbType.Int32).Value = department_id;
 
                 cmd2.ExecuteNonQuery();
@@ -63,6 +63,42 @@ namespace ParseKadrovayaSpravka
                 MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
 
                 cmd2.Parameters.Add("@title", MySqlDbType.VarChar).Value = subject_form;
+
+                cmd2.ExecuteNonQuery();
+            }
+            reader1.Close();
+        }
+
+        public static void InsertGroups(Group group)
+        {
+            int spec_id = InsertEmpl_load.GetIdSpeciality(group.Speciality_code);
+            string sql = "SELECT `id` FROM `groups`" +
+                        " WHERE `title`= '" + group.Title + "'" +
+                        " AND `galactika_number`= '" + group.Galactika_number + "'" +
+                        " AND `year`= '" + group.Year + "'" +
+                        " AND `speciality_id`= '" + spec_id + "'";
+            MySqlCommand cmd1 = new MySqlCommand(sql, MainForm.connection);
+
+            MySqlDataReader reader1 = cmd1.ExecuteReader();
+            if (reader1.HasRows)
+            {
+                while (reader1.Read())
+                {
+                    int id_ = Convert.ToInt32(reader1.GetValue(0));
+                }
+                reader1.Close();
+            }
+            else
+            {
+                reader1.Close();
+                sql = "INSERT INTO `groups` (`title`, `galactika_number`,`year`,`speciality_id`)"
+                                         + " VALUES (@title, @galactika_number, @year, @speciality_id) ";
+                MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
+
+                cmd2.Parameters.Add("@title", MySqlDbType.VarChar).Value = group.Title;
+                cmd2.Parameters.Add("@galactika_number", MySqlDbType.Int32).Value = group.Galactika_number;
+                cmd2.Parameters.Add("@year", MySqlDbType.Year).Value = group.Year;
+                cmd2.Parameters.Add("@speciality_id", MySqlDbType.Int32).Value = spec_id;
 
                 cmd2.ExecuteNonQuery();
             }

@@ -20,16 +20,25 @@ namespace ParseKadrovayaSpravka
                 int group_id = GetIdGroup(empl_load.Group);
 
                 string sql = "SELECT `id` FROM `empl_loads`" +
-                                " WHERE `load_id`= '" + load_id + "'" +
-                                " AND `semester`= '" + empl_load.Semester + "'" +
-                                " AND `employee_id`= '" + empl_id + "'" +
-                                " AND `hourly_fund`= '" + empl_load.hourly_fund + "'" +
-                                " AND `subject`= '" + empl_load.Subject + "'" +
-                                " AND `group_id`= '" + group_id + "'" +
-                                " AND `subject_form_id`= '" + subject_form_id + "'" +
-                                " AND `hours_other`= '" + empl_load.Hours_other + "'" +
-                                " AND `hours_contact`= '" + empl_load.Hours_contact + "'";
+                                " WHERE `load_id`=@load_id" +
+                                " AND `semester`=@semester" +
+                                " AND `employee_id`=@employee_id" +
+                                " AND `hourly_fund`=@hourly_fund" +
+                                " AND `subject`=@subject" +
+                                " AND `group_id`=@group_id" +
+                                " AND `subject_form_id`=@subject_form_id" +
+                                " AND `hours_other`=@hours_other" +
+                                " AND `hours_contact`=@hours_contact";
                 MySqlCommand cmd1 = new MySqlCommand(sql, MainForm.connection);
+                cmd1.Parameters.Add("@load_id", MySqlDbType.Int32).Value = load_id;
+                cmd1.Parameters.Add("@semester", MySqlDbType.Int32).Value = empl_load.Semester;
+                cmd1.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = empl_id;
+                cmd1.Parameters.Add("@hourly_fund", MySqlDbType.Int32).Value = empl_load.hourly_fund;
+                cmd1.Parameters.Add("@subject", MySqlDbType.VarChar).Value = empl_load.Subject;
+                cmd1.Parameters.Add("@group_id", MySqlDbType.Int32).Value = group_id;
+                cmd1.Parameters.Add("@subject_form_id", MySqlDbType.Int32).Value = subject_form_id;
+                cmd1.Parameters.Add("@hours_other", MySqlDbType.Decimal).Value = empl_load.Hours_other;
+                cmd1.Parameters.Add("@hours_contact", MySqlDbType.Decimal).Value = empl_load.Hours_contact;
 
                 MySqlDataReader reader1 = cmd1.ExecuteReader();
                 if (reader1.HasRows)

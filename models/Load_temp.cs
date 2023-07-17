@@ -16,10 +16,10 @@ namespace ParseKadrovayaSpravka.models
         public Group Group { get; set; }
         public string Subject { get; set; }
         public string Subject_form { get; set; }
-        public decimal Hours_other { get; set; }
-        public decimal Hours_contact { get; set; }
+        public double Hours_other { get; set; }
+        public double Hours_contact { get; set; }
 
-        public Load_temp(Load load, Employee empl, int semester, int hourly_fund, Group group, string subject, string subject_form, decimal hours_other, decimal hours_contact)
+        public Load_temp(Load load, Employee empl, int semester, int hourly_fund, Group group, string subject, string subject_form, double hours_other, double hours_contact)
         {
             Load = load;
             Empl = empl;

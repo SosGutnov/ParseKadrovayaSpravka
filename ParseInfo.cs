@@ -3,6 +3,7 @@ using ClosedXML.Excel;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using ParseKadrovayaSpravka.models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -216,7 +217,7 @@ namespace ParseKadrovayaSpravka
 
             Workbook wb = new Workbook(path);
             List<Load_temp> listloads = new List<Load_temp>();
-            for (int i = 4; i < wb.Worksheets.Count; i++)
+            for (int i = 4; i < 6; i++)
             {
                 var sheet = wb.Worksheets[i];
                 //System.Console.WriteLine(sheet.Cells.MaxDataRow);
@@ -236,8 +237,8 @@ namespace ParseKadrovayaSpravka
                     Group group = new Group(sheet.Cells[j, 18].Value.ToString(), 0, int.Parse(sheet.Cells[j, 24].Value.ToString()), sheet.Cells[j, 21].Value.ToString());
                     string subject = sheet.Cells[j, 3].Value.ToString();
                     string subject_form = sheet.Cells[j, 8].Value.ToString();
-                    decimal hours_other = 0;
-                    decimal hours_contact = 0;
+                    double hours_other = 0;
+                    double hours_contact = 0;
 
                     if (sheet.Cells[j, 11].Value.ToString().Contains("поч"))
                     {
@@ -248,11 +249,11 @@ namespace ParseKadrovayaSpravka
                         || subject_form == "Курсовая работа" || subject_form.Contains("Практические")
                         || subject_form == "Лабораторная" || subject_form.Contains("практика"))
                     {
-                        hours_other = decimal.Parse(sheet.Cells[j, 13].Value.ToString());
+                        hours_other = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
                     }
                     else
                     {
-                        hours_contact = decimal.Parse(sheet.Cells[j, 13].Value.ToString());
+                        hours_contact = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
                     }
                     Load_temp loaaad = new Load_temp(load, empl, semester, hourly_fund, group, subject, subject_form, hours_other, hours_contact);
                     listloads.Add(loaaad);
@@ -265,8 +266,11 @@ namespace ParseKadrovayaSpravka
                 {
                     InsertReferenceTables.InsertLoads(load.Load);
                     InsertReferenceTables.InsertSubjectForms(load.Subject_form);
+                    InsertReferenceTables.InsertGroups(load.Group);
                 }
             }
+            System.Console.WriteLine("loads - OK");
+            System.Console.WriteLine("groups - OK");
             foreach (var load in listloads)
             {
                 InsertEmpl_load.Insert(load);
@@ -300,8 +304,6 @@ namespace ParseKadrovayaSpravka
             {
                 serializer.Serialize(writer, empl_load);
             }*/
-
-            System.Console.WriteLine("Готово");
         }
     }
 }
