@@ -234,7 +234,7 @@ namespace ParseKadrovayaSpravka
 
                     int semester = int.Parse(sheet.Cells[j, 6].Value.ToString());
                     int hourly_fund = 0;
-                    Group group = new Group(sheet.Cells[j, 18].Value.ToString(), 0, int.Parse(sheet.Cells[j, 24].Value.ToString()), sheet.Cells[j, 21].Value.ToString());
+                    
                     string subject = sheet.Cells[j, 3].Value.ToString();
                     string subject_form = sheet.Cells[j, 8].Value.ToString();
                     double hours_other = 0;
@@ -255,7 +255,14 @@ namespace ParseKadrovayaSpravka
                     {
                         hours_contact = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
                     }
-                    Load_temp loaaad = new Load_temp(load, empl, semester, hourly_fund, group, subject, subject_form, hours_other, hours_contact);
+                    Console.WriteLine(sheet.Cells[j, 31].Value.ToString().Split() + " " + sheet.Cells[j, 21].Value.ToString());
+                    Speciality spec = new Speciality(sheet.Cells[j, 31].Value.ToString().Split()[2].Trim(), sheet.Cells[j, 21].Value.ToString());
+                    Title_plan title_plan = new Title_plan(spec, int.Parse(sheet.Cells[j, 24].Value.ToString()));
+                    Group group = new Group(sheet.Cells[j, 18].Value.ToString(), 0, int.Parse(sheet.Cells[j, 24].Value.ToString()), spec);
+                    Edu_plan edu_plan = new Edu_plan(subject, title_plan);
+                    Edu_semester edu_sem = new Edu_semester(edu_plan, semester);
+
+                    Load_temp loaaad = new Load_temp(load, empl, semester, hourly_fund, edu_sem, group, subject, subject_form, hours_other, hours_contact);
                     listloads.Add(loaaad);
                 }
             }

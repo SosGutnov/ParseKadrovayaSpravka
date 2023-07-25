@@ -11,14 +11,14 @@ namespace ParseKadrovayaSpravka.models
         public string Title { get; set; }
         public int Galactika_number { get; set; }
         public int Year { get; set; }
-        public string Speciality_code { get; set; }
+        public Speciality Speciality { get; set; }
 
-        public Group(string title, int galactika_number, int year, string speciality_code)
+        public Group(string title, int galactika_number, int year, Speciality speciality)
         {
             Title = title;
             Galactika_number = galactika_number;
             Year = year;
-            Speciality_code = speciality_code;
+            Speciality = speciality;
         }
     }
 }

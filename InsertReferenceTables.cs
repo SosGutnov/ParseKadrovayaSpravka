@@ -71,7 +71,7 @@ namespace ParseKadrovayaSpravka
 
         public static void InsertGroups(Group group)
         {
-            int spec_id = InsertEmpl_load.GetIdSpeciality(group.Speciality_code);
+            int spec_id = InsertEmpl_load.GetIdSpeciality(group.Speciality);
             string sql = "SELECT `id` FROM `groups`" +
                         " WHERE `title`= '" + group.Title + "'" +
                         " AND `galactika_number`= '" + group.Galactika_number + "'" +

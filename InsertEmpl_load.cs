@@ -18,6 +18,7 @@ namespace ParseKadrovayaSpravka
                 int empl_id = GetIdEmployee(empl_load.Empl);
                 int subject_form_id = GetIdSubjectForm(empl_load.Subject_form);
                 int group_id = GetIdGroup(empl_load.Group);
+                int edu_sem_id = GetIdEdu_semester(empl_load.Edu_semester);
 
                 string sql = "SELECT `id` FROM `empl_loads`" +
                                 " WHERE `load_id`=@load_id" +
@@ -25,6 +26,7 @@ namespace ParseKadrovayaSpravka
                                 " AND `employee_id`=@employee_id" +
                                 " AND `hourly_fund`=@hourly_fund" +
                                 " AND `subject`=@subject" +
+                                " AND `edu_semester_id`=@edu_sem_id" +
                                 " AND `group_id`=@group_id" +
                                 " AND `subject_form_id`=@subject_form_id" +
                                 " AND `hours_other`=@hours_other" +
@@ -34,6 +36,7 @@ namespace ParseKadrovayaSpravka
                 cmd1.Parameters.Add("@semester", MySqlDbType.Int32).Value = empl_load.Semester;
                 cmd1.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = empl_id;
                 cmd1.Parameters.Add("@hourly_fund", MySqlDbType.Int32).Value = empl_load.hourly_fund;
+                cmd1.Parameters.Add("@edu_sem_id", MySqlDbType.Int32).Value = edu_sem_id;
                 cmd1.Parameters.Add("@subject", MySqlDbType.VarChar).Value = empl_load.Subject;
                 cmd1.Parameters.Add("@group_id", MySqlDbType.Int32).Value = group_id;
                 cmd1.Parameters.Add("@subject_form_id", MySqlDbType.Int32).Value = subject_form_id;
@@ -176,7 +179,7 @@ namespace ParseKadrovayaSpravka
             int id = 0;
             try
             {
-                int spec_id = GetIdSpeciality(group.Speciality_code);
+                int spec_id = GetIdSpeciality(group.Speciality);
                 string sql = "SELECT `id` FROM `groups` WHERE `title`= '" + group.Title + "' AND `year`= '" + group.Year + "' AND `speciality_id`= '" + spec_id + "'";
 
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
@@ -198,23 +201,6 @@ namespace ParseKadrovayaSpravka
                 Console.WriteLine(e.StackTrace);
                 Console.WriteLine("Выберите файл");
             }
-
-            return id;
-        }
-
-        public static int GetIdEduSemester(Edu_semester edu)
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e);
-                Console.WriteLine(e.StackTrace);
-                Console.WriteLine("Выберите файл");
-            }
-            int id = 0;
 
             return id;
         }
@@ -278,14 +264,139 @@ namespace ParseKadrovayaSpravka
             return id;
         }
 
-        public static int GetIdSpeciality(string spec_code)
+        public static int GetIdSpeciality(Speciality speciality)
         {
             int id = 0;
             try
             {
-                string sql = "SELECT `id` FROM `speciality` WHERE `code`= '" + spec_code + "'";
+                string sql = "SELECT `id` FROM `speciality` WHERE `title`= @title AND `code`=@code";
 
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
+                cmd.Parameters.Add("@title", MySqlDbType.VarChar).Value = speciality.Title;
+                cmd.Parameters.Add("@code", MySqlDbType.VarChar).Value = speciality.Code;
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader.GetValue(0));
+                    }
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine("Выберите файл");
+            }
+            return id;
+        }
+
+        public static int GetIdTitle_plan(Title_plan title_plan)
+        {
+            int id = 0;
+            try
+            {
+                int spec_id = GetIdSpeciality(title_plan.Spec);
+                string sql = "SELECT `id` FROM `title_plan` WHERE `spec_id`= @spec_id AND `date_enter` = @date_enter";
+
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
+                cmd.Parameters.Add("@spec_id", MySqlDbType.Int32).Value = spec_id;
+                cmd.Parameters.Add("@date_enter", MySqlDbType.Year).Value = title_plan.Date_enter;
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader.GetValue(0));
+                    }
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine("Выберите файл");
+            }
+            return id;
+        }
+
+        public static int GetIdSubject(string subject)
+        {
+
+            int id = 0;
+            try
+            {
+                string sql = "SELECT `id` FROM `subjects` WHERE `title`= '" + subject + "'";
+
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader.GetValue(0));
+                    }
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine("Выберите файл");
+            }
+            return id;
+        }
+
+        public static int GetIdEdu_plan(Edu_plan edu_plan)
+        {
+            int id = 0;
+            try
+            {
+                int subject_id = GetIdSubject(edu_plan.Subject);
+                int title_plan_id = GetIdTitle_plan(edu_plan.Title_plan);
+                string sql = "SELECT `id` FROM `edu_plan` WHERE `subject_id`= @subject_id AND `title_plan_id` = @title_plan_id";
+
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
+                cmd.Parameters.Add("@subject_id", MySqlDbType.Int32).Value = subject_id;
+                cmd.Parameters.Add("@title_plan_id", MySqlDbType.Int32).Value = title_plan_id;
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader.GetValue(0));
+                    }
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine("Выберите файл");
+            }
+            return id;
+        }
+
+        public static int GetIdEdu_semester(Edu_semester edu_semester)
+        {
+            int id = 0;
+            try
+            {
+                int edu_plan_id = GetIdEdu_plan(edu_semester.Edu_plan);
+                string sql = "SELECT `id` FROM `edu_semesters` WHERE `edu_plan_id`= @edu_plan_id AND `semester` = @semester";
+
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.connection);
+                cmd.Parameters.Add("@edu_plan_id", MySqlDbType.Int32).Value = edu_plan_id;
+                cmd.Parameters.Add("@semester", MySqlDbType.Int32).Value = edu_semester.Semester;
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)

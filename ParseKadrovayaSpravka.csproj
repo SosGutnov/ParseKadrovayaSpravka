@@ -148,6 +148,7 @@
     <Compile Include="InsertExternalPractices.cs" />
     <Compile Include="InsertTitles.cs" />
     <Compile Include="models\Department.cs" />
+    <Compile Include="models\Edu_plan.cs" />
     <Compile Include="models\Edu_semester.cs" />
     <Compile Include="models\Employee.cs" />
     <Compile Include="models\Empl_load.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="models\Semester.cs" />
     <Compile Include="models\Speciality.cs" />
     <Compile Include="models\Subject.cs" />
+    <Compile Include="models\Title_plan.cs" />
     <Compile Include="ParseInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

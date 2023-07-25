@@ -8,6 +8,13 @@ namespace ParseKadrovayaSpravka.models
 {
     class Speciality
     {
+        public string Title { get; set; }
+        public string Code { get; set; }
 
+        public Speciality(string title, string code)
+        {
+            Title = title;
+            Code = code;
+        }
     }
 }
