@@ -55,8 +55,8 @@ namespace ParseKadrovayaSpravka
                 else
                 {
                     reader1.Close();
-                    sql = "INSERT INTO `empl_loads` (`load_id`, `semester`, `employee_id`, `hourly_fund`, `subject`, `group_id`, `subject_form_id`, `hours_other`, `hours_contact`)"
-                                             + " VALUES (@load_id, @semester, @employee_id, @hourly_fund, @subject, @group_id, @subject_form_id, @hours_other, @hours_contact) ";
+                    sql = "INSERT INTO `empl_loads` (`load_id`, `semester`, `employee_id`, `hourly_fund`, `edu_semester_id`, `subject`, `group_id`, `subject_form_id`, `hours_other`, `hours_contact`)"
+                                             + " VALUES (@load_id, @semester, @employee_id, @hourly_fund, @edu_sem_id,  @subject, @group_id, @subject_form_id, @hours_other, @hours_contact) ";
                     MySqlCommand cmd2 = new MySqlCommand(sql, MainForm.connection);
 
                     cmd2.Parameters.Add("@load_id", MySqlDbType.Int32).Value = load_id;
@@ -64,6 +64,7 @@ namespace ParseKadrovayaSpravka
                     cmd2.Parameters.Add("@employee_id", MySqlDbType.Int32).Value = empl_id;
                     cmd2.Parameters.Add("@hourly_fund", MySqlDbType.Int32).Value = empl_load.hourly_fund;
                     cmd2.Parameters.Add("@subject", MySqlDbType.VarChar).Value = empl_load.Subject;
+                    cmd2.Parameters.Add("@edu_sem_id", MySqlDbType.Int32).Value = edu_sem_id;
                     cmd2.Parameters.Add("@group_id", MySqlDbType.Int32).Value = group_id;
                     cmd2.Parameters.Add("@subject_form_id", MySqlDbType.Int32).Value = subject_form_id;
                     cmd2.Parameters.Add("@hours_other", MySqlDbType.Decimal).Value = empl_load.Hours_other;
@@ -132,7 +133,14 @@ namespace ParseKadrovayaSpravka
 
                 if (id == 0)
                 {
-                    Console.WriteLine("Парсинг нагрузок. Преподаватель не найден." + empl.Surname + " " + empl.Name + " " + empl.Patronimyc);
+                    sql = "Insert into employees (surname, name, patronimyc) values (@surname, @name, @patronimyc) ";
+                    MySqlCommand cmd1 = new MySqlCommand(sql, MainForm.connection);
+                    cmd1.Parameters.Add("@surname", MySqlDbType.VarChar).Value = empl.Surname;
+                    cmd1.Parameters.Add("@name", MySqlDbType.VarChar).Value = empl.Name;
+                    cmd1.Parameters.Add("@patronimyc", MySqlDbType.VarChar).Value = empl.Patronimyc;
+
+                    int rowCount = cmd1.ExecuteNonQuery();
+                    id = Convert.ToInt32(cmd1.LastInsertedId);
                 }
             }
             catch (Exception e)

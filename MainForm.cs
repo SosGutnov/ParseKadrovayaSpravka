@@ -1,14 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ParseKadrovayaSpravka
@@ -21,14 +12,14 @@ namespace ParseKadrovayaSpravka
         public MainForm()
         {
             InitializeComponent();
+
+            ConnectXMLfile.Connect();
+            dataGridViewInfo.Rows.Clear();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ConnectXMLfile.Connect(button1);
-            dataGridViewInfo.Rows.Clear();
-            toolStripMenuItem1_Click(sender,  e);
-            toolStripMenuItem2_Click(sender, e);
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,12 +34,12 @@ namespace ParseKadrovayaSpravka
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            ParseInfo.ParseSpecialPractices(dataGridViewInfo);
+            //ParseInfo.ParseSpecialPractices(dataGridViewInfo);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            ParseInfo.ParseTacherInfo(dataGridViewInfo);
+            //ParseInfo.ParseTacherInfo(dataGridViewInfo);
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
@@ -66,12 +57,12 @@ namespace ParseKadrovayaSpravka
             connection.Open();
             try
             {
-                InsertDegrees.InsertEmpl(ParseInfo.fio);
+                /*InsertDegrees.InsertEmpl(ParseInfo.fio);
                 InsertDegrees.InsertEmpl_Degrees(ParseInfo.fio, ParseInfo.degrees);
                 InsertEducation.InsertEdu1(ParseInfo.fio, ParseInfo.for_education);
                 InsertTitles.InsertTitl(ParseInfo.fio, ParseInfo.degrees);//degrees=titles
-                InsertExternalPractices.InsertExtP(ParseInfo.external_practice);
-                ParseInfo.ParseLoads();
+                InsertExternalPractices.InsertExtP(ParseInfo.external_practice);*/
+                InsertLoads();
             }
             finally
             {
@@ -84,6 +75,29 @@ namespace ParseKadrovayaSpravka
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            ParseInfo.ParseLoads(progressBar1);
+        }
+        public void InsertLoads()
+        {
+            progressBar1.Value = 0;
+            progressBar1.Minimum = 0;
+            progressBar1.Step = 1;
+            progressBar1.Maximum = ParseInfo.Listloads.Count;
+            foreach (var load in ParseInfo.Listloads)
+            {
+                InsertReferenceTables.InsertLoads(load.Load);
+                InsertReferenceTables.InsertSubjectForms(load.Subject_form);
+                InsertReferenceTables.InsertGroups(load.Group);
+                InsertEmpl_load.Insert(load);
+                progressBar1.PerformStep();
+            }
+            System.Console.WriteLine("loads - OK");
+            System.Console.WriteLine("groups - OK");
+            System.Console.WriteLine("empl_loads - OK");
         }
     }
 }

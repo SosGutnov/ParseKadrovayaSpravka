@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ParseKadrovayaSpravka
@@ -11,13 +8,13 @@ namespace ParseKadrovayaSpravka
     {
         public static List<string> XlPath { get; set; }
 
-        public static void Connect(Button button1)
+        public static void Connect()
         {
             var curDir = Environment.CurrentDirectory;
             XlPath = new List<string>();
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                
+
                 openFileDialog.InitialDirectory = curDir + @"\..\..";
                 //openFileDialog.Filter = "(*.xlsm)|*.xlsm|(*.xlsx)|*.xlsx";
                 openFileDialog.Filter = "(*.xls)|*.xls*";
@@ -32,12 +29,9 @@ namespace ParseKadrovayaSpravka
                         XlPath.Add(item);
                     }
                     Console.WriteLine(XlPath[0]);
-                    
+
                 }
             }
-
-            button1.Text = "Файл выбран";
-
         }
     }
 }

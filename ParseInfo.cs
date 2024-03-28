@@ -16,6 +16,7 @@ namespace ParseKadrovayaSpravka
         public static List<string> degrees = new List<string>();
         public static List<string> for_education = new List<string>();
         public static List<string[]> external_practice = new List<string[]>();
+        public static List<Load_temp> Listloads;
 
         public static void ParseTacherInfo(DataGridView data)
         {
@@ -211,106 +212,142 @@ namespace ParseKadrovayaSpravka
 
         }
 
-        public static void ParseLoads()
+        public static void ParseLoads(ProgressBar progressBar)
         {
-            string path = "C:\\Users\\sosla\\Downloads\\нагрузкановая.xlsx";
-
-            Workbook wb = new Workbook(path);
-            List<Load_temp> listloads = new List<Load_temp>();
-            for (int i = 4; i < 6; i++)
+            try
             {
-                var sheet = wb.Worksheets[i];
-                //System.Console.WriteLine(sheet.Cells.MaxDataRow);
-                for (int j = 1; j <= sheet.Cells.MaxDataRow; j++)
+                Console.WriteLine("Загрузка файла - начало");
+
+                string path = ConnectXMLfile.XlPath[0]; // файл нагрузок
+
+                Workbook wb = new Workbook(path);
+                Listloads = new List<Load_temp>();
+
+                progressBar.Value = 0;
+                progressBar.Minimum = 0;
+                progressBar.Step = 1;
+                progressBar.Maximum = wb.Worksheets.Count - 4; // Полоска прогресса по количеству спарсенных листов
+
+                for (int i = 4; i < wb.Worksheets.Count; i++)
                 {
-                    Department dep = new Department(sheet.Cells[j, 20].Value.ToString(), sheet.Cells[j, 19].Value.ToString());
-                    Load load = new Load(int.Parse(sheet.Cells[j, 25].Value.ToString()), dep);
-                    string[] emp = sheet.Cells[j, 11].Value.ToString().Replace("  ", " ").Split();
-                    if (sheet.Cells[j, 11].Value.ToString().Contains("Вакансия"))
+                    var sheet = wb.Worksheets[i];
+                    //System.Console.WriteLine(sheet.Cells.MaxDataRow);
+                    for (int j = 1; j <= sheet.Cells.MaxDataRow; j++)
                     {
-                        break;
-                    }
-                    Employee empl = new Employee(emp[0], emp[1][0].ToString(), emp[1][2].ToString());
+                        Department dep = new Department(sheet.Cells[j, 20].Value.ToString(), sheet.Cells[j, 19].Value.ToString());
+                        Load load = new Load(int.Parse(sheet.Cells[j, 25].Value.ToString()), dep);
+                        string[] emp = sheet.Cells[j, 11].Value.ToString().Replace("  ", " ").Split();
+                        if (sheet.Cells[j, 11].Value.ToString().Contains("Вакансия"))
+                        {
+                            break;
+                        }
+                        Employee empl = new Employee(emp[0], emp[1][0].ToString(), emp[1][2].ToString());
 
-                    int semester = int.Parse(sheet.Cells[j, 6].Value.ToString());
-                    int hourly_fund = 0;
-                    
-                    string subject = sheet.Cells[j, 3].Value.ToString();
-                    string subject_form = sheet.Cells[j, 8].Value.ToString();
-                    double hours_other = 0;
-                    double hours_contact = 0;
+                        int semester = int.Parse(sheet.Cells[j, 6].Value.ToString());
+                        int hourly_fund = 0;
 
-                    if (sheet.Cells[j, 11].Value.ToString().Contains("поч"))
-                    {
-                        hourly_fund = 1;
-                    }
+                        string subject = sheet.Cells[j, 3].Value.ToString();
+                        string subject_form = sheet.Cells[j, 8].Value.ToString();
+                        double hours_other = 0;
+                        double hours_contact = 0;
 
-                    if (subject_form == "Экзамен" || subject_form == "Зачет" || subject_form.Contains("Консульт")
-                        || subject_form == "Курсовая работа" || subject_form.Contains("Практические")
-                        || subject_form == "Лабораторная" || subject_form.Contains("практика"))
-                    {
-                        hours_other = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
-                    }
-                    else
-                    {
-                        hours_contact = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
-                    }
-                    Console.WriteLine(sheet.Cells[j, 31].Value.ToString().Split() + " " + sheet.Cells[j, 21].Value.ToString());
-                    Speciality spec = new Speciality(sheet.Cells[j, 31].Value.ToString().Split()[2].Trim(), sheet.Cells[j, 21].Value.ToString());
-                    Title_plan title_plan = new Title_plan(spec, int.Parse(sheet.Cells[j, 24].Value.ToString()));
-                    Group group = new Group(sheet.Cells[j, 18].Value.ToString(), 0, int.Parse(sheet.Cells[j, 24].Value.ToString()), spec);
-                    Edu_plan edu_plan = new Edu_plan(subject, title_plan);
-                    Edu_semester edu_sem = new Edu_semester(edu_plan, semester);
+                        if (sheet.Cells[j, 11].Value.ToString().Contains("поч"))
+                        {
+                            hourly_fund = 1;
+                        }
 
-                    Load_temp loaaad = new Load_temp(load, empl, semester, hourly_fund, edu_sem, group, subject, subject_form, hours_other, hours_contact);
-                    listloads.Add(loaaad);
+                        if (subject_form == "Экзамен" || subject_form == "Зачет" || subject_form.Contains("Консульт")
+                            || subject_form == "Курсовая работа" || subject_form.Contains("Практические")
+                            || subject_form == "Лабораторная" || subject_form.Contains("практика"))
+                        {
+                            hours_other = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
+                        }
+                        else
+                        {
+                            hours_contact = Convert.ToDouble(sheet.Cells[j, 13].Value.ToString());
+                        }
+                        if (sheet.Cells[j, 31].Value == null)
+                        {
+                            break;
+                        }
+                        string spec_title = GetSpecTitle(sheet.Cells[j, 31].Value.ToString().Split());
+                        //Console.WriteLine(spec_title + " " + sheet.Cells[j, 21].Value.ToString());
+                        Speciality spec = new Speciality(spec_title, sheet.Cells[j, 21].Value.ToString());
+                        Title_plan title_plan = new Title_plan(spec, int.Parse(sheet.Cells[j, 24].Value.ToString()));
+                        Group group = new Group(sheet.Cells[j, 18].Value.ToString(), 0, int.Parse(sheet.Cells[j, 24].Value.ToString()), spec);
+                        Edu_plan edu_plan = new Edu_plan(subject, title_plan);
+                        Edu_semester edu_sem = new Edu_semester(edu_plan, semester);
+
+                        Load_temp loaaad = new Load_temp(load, empl, semester, hourly_fund, edu_sem, group, subject, subject_form, hours_other, hours_contact);
+                        Listloads.Add(loaaad);
+
+                        
+                    }
+                    progressBar.PerformStep();
                 }
-            }
+                Console.WriteLine("Загрузка файла - конец");
 
-            if (true)
-            {
-                foreach (var load in listloads)
+                /*if (true)
                 {
-                    InsertReferenceTables.InsertLoads(load.Load);
-                    InsertReferenceTables.InsertSubjectForms(load.Subject_form);
-                    InsertReferenceTables.InsertGroups(load.Group);
+                    foreach (var load in Listloads)
+                    {
+                        InsertReferenceTables.InsertLoads(load.Load);
+                        InsertReferenceTables.InsertSubjectForms(load.Subject_form);
+                        InsertReferenceTables.InsertGroups(load.Group);
+                    }
+                    System.Console.WriteLine("loads - OK");
+                    System.Console.WriteLine("groups - OK");
+                    foreach (var load in Listloads)
+                    {
+                        InsertEmpl_load.Insert(load);
+                    }
+                    System.Console.WriteLine("empl_loads - OK");
                 }
+                /*Department dep = new Department("Кафедра прикладной математики и информатики", "Факультет математики и компьютерных наук");
+                Load load = new Load(2022, dep);
+
+                Employee empl = new Employee("Циунчик","С","А");
+
+                Subject sb = new Subject(0, "ИВТ(б)-21-1-ОФО", "Современные языки программирования", "Лабораторная", 36, 0);
+                Subject sb1 = new Subject(0, "ИВТ(б)-21-1-ОФО", "Современные языки программирования", "Лекция", 36, 0);
+
+                List<Subject> listsb = new List<Subject>();
+                listsb.Add(sb);
+                listsb.Add(sb1);
+
+                Semester sem = new Semester(1, listsb);
+                Semester sem1 = new Semester(2, listsb);
+
+                List<Semester> listsm = new List<Semester>();
+                listsm.Add(sem);
+                listsm.Add(sem1);
+
+                Empl_load empl_load = new Empl_load(load, empl, listsm);
+
+                JsonSerializer serializer = new JsonSerializer();
+
+                using (StreamWriter sw = new StreamWriter("loads1.json"))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, empl_load);
+                }*/
             }
-            System.Console.WriteLine("loads - OK");
-            System.Console.WriteLine("groups - OK");
-            foreach (var load in listloads)
+            catch (Exception e)
             {
-                InsertEmpl_load.Insert(load);
+                Console.WriteLine("Error: " + e);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine("Выберите файл");
             }
-            System.Console.WriteLine("empl_loads - OK");
-            /*Department dep = new Department("Кафедра прикладной математики и информатики", "Факультет математики и компьютерных наук");
-            Load load = new Load(2022, dep);
+        }
 
-            Employee empl = new Employee("Циунчик","С","А");
-
-            Subject sb = new Subject(0, "ИВТ(б)-21-1-ОФО", "Современные языки программирования", "Лабораторная", 36, 0);
-            Subject sb1 = new Subject(0, "ИВТ(б)-21-1-ОФО", "Современные языки программирования", "Лекция", 36, 0);
-
-            List<Subject> listsb = new List<Subject>();
-            listsb.Add(sb);
-            listsb.Add(sb1);
-
-            Semester sem = new Semester(1, listsb);
-            Semester sem1 = new Semester(2, listsb);
-
-            List<Semester> listsm = new List<Semester>();
-            listsm.Add(sem);
-            listsm.Add(sem1);
-
-            Empl_load empl_load = new Empl_load(load, empl, listsm);
-
-            JsonSerializer serializer = new JsonSerializer();
-
-            using (StreamWriter sw = new StreamWriter("loads1.json"))
-            using (JsonWriter writer = new JsonTextWriter(sw))
+        public static string GetSpecTitle(string[] s)
+        {
+            string r = "";
+            for (int i = 2; i < s.Length; i++)
             {
-                serializer.Serialize(writer, empl_load);
-            }*/
+                r += s[i] + " ";
+            }
+            return r.Trim();
         }
     }
 }

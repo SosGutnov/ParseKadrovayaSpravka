@@ -29,7 +29,6 @@ namespace ParseKadrovayaSpravka
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
             this.dataGridViewInfo = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,20 +43,12 @@ namespace ParseKadrovayaSpravka
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonSendDB = new System.Windows.Forms.Button();
+            this.buttonParseData = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewInfo)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(150, 38);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Выбрать файл";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dataGridViewInfo
             // 
@@ -73,9 +64,9 @@ namespace ParseKadrovayaSpravka
             this.Column8,
             this.Column9,
             this.Column10});
-            this.dataGridViewInfo.Location = new System.Drawing.Point(12, 71);
+            this.dataGridViewInfo.Location = new System.Drawing.Point(12, 27);
             this.dataGridViewInfo.Name = "dataGridViewInfo";
-            this.dataGridViewInfo.Size = new System.Drawing.Size(828, 370);
+            this.dataGridViewInfo.Size = new System.Drawing.Size(828, 422);
             this.dataGridViewInfo.TabIndex = 1;
             this.dataGridViewInfo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -159,24 +150,44 @@ namespace ParseKadrovayaSpravka
             this.toolStripMenuItem2.Text = "Спецпрактики";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
-            // button2
+            // buttonSendDB
             // 
-            this.button2.Location = new System.Drawing.Point(690, 27);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(150, 38);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Закинуть в базу";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonSendDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSendDB.Location = new System.Drawing.Point(690, 455);
+            this.buttonSendDB.Name = "buttonSendDB";
+            this.buttonSendDB.Size = new System.Drawing.Size(150, 38);
+            this.buttonSendDB.TabIndex = 3;
+            this.buttonSendDB.Text = "Закинуть в базу";
+            this.buttonSendDB.UseVisualStyleBackColor = true;
+            this.buttonSendDB.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // buttonParseData
+            // 
+            this.buttonParseData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonParseData.Location = new System.Drawing.Point(12, 455);
+            this.buttonParseData.Name = "buttonParseData";
+            this.buttonParseData.Size = new System.Drawing.Size(163, 38);
+            this.buttonParseData.TabIndex = 4;
+            this.buttonParseData.Text = "Загрузить данные";
+            this.buttonParseData.UseVisualStyleBackColor = true;
+            this.buttonParseData.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(181, 455);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(503, 38);
+            this.progressBar1.TabIndex = 5;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(852, 451);
-            this.Controls.Add(this.button2);
+            this.ClientSize = new System.Drawing.Size(852, 505);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.buttonParseData);
+            this.Controls.Add(this.buttonSendDB);
             this.Controls.Add(this.dataGridViewInfo);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -205,8 +216,9 @@ namespace ParseKadrovayaSpravka
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.Button button2;
-        public System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonSendDB;
+        private System.Windows.Forms.Button buttonParseData;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
